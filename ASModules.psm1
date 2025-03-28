@@ -86,12 +86,14 @@ Import-Module ActiveDirectory
 Get-ADUser -Filter * -Properties Name, Enabled, LockedOut, AccountExpirationDate | 
 Select-Object SamAccountName, Name, 
     @{Name='AccountStatus';Expression={
-        if ($_.Enabled -eq $false) { 'Disabled' }
-        elseif ($_.LockedOut -eq $true) { 'Locked Out' }
-        elseif ($_.AccountExpirationDate -and $_.AccountExpirationDate -lt (Get-Date)) { 'Expired' }
-        elseif ($_.Enabled -eq $true) { 'Active' }
-        else { 'Unknown Status' }
+        switch ($true) {
+            ($_.Enabled -eq $false) { 'Disabled' }
+            ($_.LockedOut -eq $true) { 'Locked Out' }
+            (($_.AccountExpirationDate) -and ($_.AccountExpirationDate -lt (Get-Date))) { 'Expired' }
+            (($_.Enabled -eq $true) -and ($_.LockedOut -eq $false)) { 'Active' }
+            default { 'Unknown Status' }
+        }
     }} | 
-Sort-Object { $_.Name } | 
+Sort-Object Name | 
 Format-Table -AutoSize
 }
