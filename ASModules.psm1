@@ -105,7 +105,7 @@ Import-Module ActiveDirectory
 # Retrieve AD Users with detailed account status
 
  # Retrieve AD Users with detailed account status
- Get-ADUser -Filter { LockedOut -eq $true } -Properties Name, Enabled, LockedOut, AccountExpirationDate | 
+Search-ADAccount -LockedOut | 
 Select-Object SamAccountName, Name, 
     @{Name='AccountStatus';Expression={
         if ($_.Enabled -eq $false) { 'Disabled' }
