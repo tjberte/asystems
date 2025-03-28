@@ -92,6 +92,6 @@ Select-Object SamAccountName, Name,
         elseif ($_.Enabled -eq $true) { 'Active' }
         else { 'Unknown Status' }
     }} | 
-Sort-Object { $_.Name.Split(' ')[-1] } | 
+Sort-Object { $_.Name } | 
 Format-Table -AutoSize
 }
