@@ -1,4 +1,12 @@
-#full code as of 04.01.2025
+#full code as of 04.01.20253
+
+function listcomm{
+
+echo "ipinfo - display ip address information"
+
+}
+
+listcomm
 
 function ipinfo {
 $network = Get-WmiObject Win32_NetworkAdapterConfiguration -EA Stop | Where-Object { $_.IPEnabled }
