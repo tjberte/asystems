@@ -1,3 +1,5 @@
+#full code as of 04.01.2025
+
 function ipinfo {
 $network = Get-WmiObject Win32_NetworkAdapterConfiguration -EA Stop | Where-Object { $_.IPEnabled }
 
@@ -7,12 +9,12 @@ $gateway = $network.DefaultIPGateway -join ", "
 # Display IPv4 information
 Write-Host "IPv4 Information:"
 Write-Host "------------------"
-Write-Host "Adapter:          $($network.Description)"  -BackgroundColor DarkBlue -ForegroundColor White
-Write-Host "Hostname:         $($network.DNSHostName)" -BackgroundColor Green -ForegroundColor White
-Write-Host "Domain  :         $($network.DNSDomainSuffixSearchOrder)"  -BackgroundColor White -ForegroundColor Black
-Write-Host "IP Address:       $($ipAddresses)" -BackgroundColor Yellow -ForegroundColor Black
+Write-Host "Adapter:          $($network.Description)"
+Write-Host "Hostname:         $($network.DNSHostName)"
+Write-Host "Domain  :         $($network.DNSDomainSuffixSearchOrder)"
+Write-Host "IP Address:       $($ipAddresses)"
 Write-Host "MAC Address:      $($network.MACAddress)"
-Write-Host "Default Gateway:  $($gateway)" -BackgroundColor Yellow -ForegroundColor Black
+Write-Host "Default Gateway:  $($gateway)"
 Write-Host "DHCP Enabled:     $($network.DHCPEnablede)"
 Write-Host "DHCP Server:      $($network.DHCPServer)"
 Write-Host "DHCP Obtained:    $($network.DHCPLeaseObtained)"
