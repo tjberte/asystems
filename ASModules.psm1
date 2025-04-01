@@ -1,12 +1,15 @@
 #full code as of 04.01.20253
+echo "To list out all of the available commands, type 'listcomm'"
 
 function listcomm{
 
 echo "ipinfo - display ip address information"
+echo "ipinfog - display ip address information in gui"
+echo "pingtest - runs a constant ping"
+echo "adqa - list all ad accounts and status"
+echo "adql - list all ad accounts locked out"
 
 }
-
-listcomm
 
 function ipinfo {
 $network = Get-WmiObject Win32_NetworkAdapterConfiguration -EA Stop | Where-Object { $_.IPEnabled }
