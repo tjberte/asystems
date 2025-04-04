@@ -131,6 +131,26 @@ Sort-Object { $_.Name } |
 Format-Table -AutoSize
 }
 
+function adqg {
+    # Ensure Active Directory module is imported
+    Import-Module ActiveDirectory
+
+    # Retrieve AD Users with detailed account status and their groups
+    Get-ADUser -Filter * -Properties Name, Enabled, LockedOut, AccountExpirationDate, MemberOf | 
+    Select-Object SamAccountName, Name,
+        @{Name='AccountStatus';Expression={
+            if ($_.Enabled -eq $false) { 'Disabled' }
+            elseif ($_.LockedOut -eq $true) { 'Locked Out' }
+            elseif ($_.AccountExpirationDate -and $_.AccountExpirationDate -lt (Get-Date)) { 'Expired' }
+            elseif ($_.Enabled -eq $true) { 'Active' }
+            else { 'Unknown Status' }
+        }},
+        @{Name='Groups';Expression={[string]::join(", ", ($_.MemberOf | Get-ADGroup | Select-Object -ExpandProperty Name))}} |
+    Sort-Object { $_.Name } |
+    Format-Table -AutoSize
+}
+
+
 function unlocku {
     param (
         [string]$Name
@@ -138,3 +158,4 @@ function unlocku {
 
      net user $Name /active:yes
 }
+
