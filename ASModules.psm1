@@ -1,4 +1,4 @@
-#full code as of 04.01.20253
+#full code as of 04.01.2025
 echo "To list out all of the available commands, type 'listcomm'"
 
 function listcomm{
