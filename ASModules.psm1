@@ -132,11 +132,21 @@ Format-Table -AutoSize
 }
 
 function adqg {
+    param (
+        [string]$GroupName
+    )
+
     # Ensure Active Directory module is imported
     Import-Module ActiveDirectory
 
     # Retrieve AD Users with detailed account status and their groups
-    Get-ADUser -Filter * -Properties Name, Enabled, LockedOut, AccountExpirationDate, MemberOf | 
+    $users = Get-ADUser -Filter * -Properties Name, Enabled, LockedOut, AccountExpirationDate, MemberOf 
+
+    if ($GroupName) {
+        $users = $users | Where-Object { $_.MemberOf -contains (Get-ADGroup -Filter { Name -eq $GroupName }).DistinguishedName }
+    }
+
+    $users | 
     Select-Object SamAccountName, Name,
         @{Name='AccountStatus';Expression={
             if ($_.Enabled -eq $false) { 'Disabled' }
@@ -149,6 +159,7 @@ function adqg {
     Sort-Object { $_.Name } |
     Format-Table -AutoSize
 }
+
 
 
 function unlocku {
