@@ -130,3 +130,11 @@ Select-Object SamAccountName, Name,
 Sort-Object { $_.Name } | 
 Format-Table -AutoSize
 }
+
+function unlocku {
+    param (
+        [string]$Name
+    )
+
+     net user $Name /active:yes
+}
